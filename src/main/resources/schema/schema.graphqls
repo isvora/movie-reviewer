@@ -1,0 +1,25 @@
+type Query {
+    movies(movie: String): [Movie]
+    reviews(movie: String!, platform: String): [Review]
+}
+
+type Mutation {
+    addMovie(movie: String!): Movie
+    addReview(reviewInput: ReviewInput!): Review
+}
+
+input ReviewInput {
+    movie: String!
+    score: Float!,
+    platform: String!
+}
+
+type Movie {
+    name: String!
+    reviews: [Review]
+}
+
+type Review {
+    score: Float!
+    platform: String!
+}
