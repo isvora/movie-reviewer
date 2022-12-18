@@ -7,7 +7,7 @@ query movies {
                 platform
             }
             ... on ReviewError {
-                error
+                errors
             }
         }
     }

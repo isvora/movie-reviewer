@@ -42,12 +42,12 @@ public class ReviewServiceTest {
     void testAddReview() {
         // given
         var reviewInput = ReviewInput.newBuilder()
-                .platform(TestHelper.PLATFORM)
+                .platform(TestHelper.IMDB)
                 .movie(TestHelper.MOVIE_NAME)
                 .score(TestHelper.SCORE)
                 .build();
         var movieEntity = new MovieEntity(TestHelper.MOVIE_NAME);
-        var reviewEntity = new ReviewEntity(TestHelper.SCORE, TestHelper.PLATFORM, movieEntity);
+        var reviewEntity = new ReviewEntity(TestHelper.SCORE, TestHelper.IMDB, movieEntity);
 
         Mockito.when(movieService.getMovieByName(TestHelper.MOVIE_NAME)).thenReturn(Optional.of(movieEntity));
         Mockito.when(reviewRepository.save(any(ReviewEntity.class))).thenReturn(reviewEntity);
@@ -66,7 +66,7 @@ public class ReviewServiceTest {
     void testAddReviewThrowsException() {
         // given
         var reviewInput = ReviewInput.newBuilder()
-                .platform(TestHelper.PLATFORM)
+                .platform(TestHelper.IMDB)
                 .movie(TestHelper.MOVIE_NAME)
                 .score(TestHelper.SCORE)
                 .build();
@@ -81,13 +81,13 @@ public class ReviewServiceTest {
     void testGetReviewsByMovieAndPlatformMovieIsPresent() {
         // given
         var movieEntity = new MovieEntity(TestHelper.MOVIE_NAME);
-        var reviewEntity = new ReviewEntity(TestHelper.SCORE, TestHelper.PLATFORM, movieEntity);
+        var reviewEntity = new ReviewEntity(TestHelper.SCORE, TestHelper.IMDB, movieEntity);
 
         Mockito.when(movieService.getMovieByName(TestHelper.MOVIE_NAME)).thenReturn(Optional.of(movieEntity));
-        Mockito.when(reviewRepository.findByMovieEntityAndPlatform(movieEntity, TestHelper.PLATFORM)).thenReturn(Optional.of(reviewEntity));
+        Mockito.when(reviewRepository.findByMovieEntityAndPlatform(movieEntity, TestHelper.IMDB)).thenReturn(Optional.of(reviewEntity));
 
         // when
-        var reviewEntities = reviewService.getReviewsByMovieAndPlatform(TestHelper.MOVIE_NAME, TestHelper.PLATFORM);
+        var reviewEntities = reviewService.getReviewsByMovieAndPlatform(TestHelper.MOVIE_NAME, TestHelper.IMDB);
 
         // then
         Assertions.assertFalse(reviewEntities.isEmpty());
@@ -99,7 +99,7 @@ public class ReviewServiceTest {
     void testGetReviewsByMovieIsPresent() {
         // given
         var movieEntity = new MovieEntity(TestHelper.MOVIE_NAME);
-        var reviewEntity = new ReviewEntity(TestHelper.SCORE, TestHelper.PLATFORM, movieEntity);
+        var reviewEntity = new ReviewEntity(TestHelper.SCORE, TestHelper.IMDB, movieEntity);
 
         Mockito.when(movieService.getMovieByName(TestHelper.MOVIE_NAME)).thenReturn(Optional.of(movieEntity));
         Mockito.when(reviewRepository.findAllByMovieEntity(movieEntity)).thenReturn(List.of(reviewEntity));

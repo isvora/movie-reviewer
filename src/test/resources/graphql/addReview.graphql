@@ -1,0 +1,15 @@
+mutation addReview($movie: String!, $score: Float!, $platform: String!) {
+    addReview(reviewInput: {
+        movie: $movie,
+        score: $score,
+        platform: $platform
+    }) {
+        ... on ReviewResponse {
+            score
+            platform
+        }
+        ... on ReviewError {
+            errors
+        }
+    }
+}

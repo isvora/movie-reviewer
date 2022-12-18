@@ -1,0 +1,11 @@
+mutation scrapeRatings($movie: String!) {
+    scrapeRatings(movie: $movie) {
+        ... on ReviewResponse {
+            score
+            platform
+        }
+        ... on ReviewError {
+            errors
+        }
+    }
+}

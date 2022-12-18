@@ -26,11 +26,12 @@ type ReviewResponse {
 }
 
 type ReviewError {
-    error: [ReviewErrorEnum]!
+    errors: [ReviewErrorEnum]!
 }
 
 enum ReviewErrorEnum {
     MOVIE_NOT_FOUND
+    REVIEW_ALREADY_PRESENT
 }
 
 union Review = ReviewResponse | ReviewError

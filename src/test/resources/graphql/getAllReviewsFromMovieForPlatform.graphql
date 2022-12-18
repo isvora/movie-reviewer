@@ -1,0 +1,11 @@
+query review($movie: String!, $platform: String) {
+    reviews(movie: $movie, platform: $platform) {
+        ... on ReviewResponse {
+            score
+            platform
+        }
+        ... on ReviewError {
+            errors
+        }
+    }
+}

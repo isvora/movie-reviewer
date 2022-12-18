@@ -37,21 +37,27 @@ public class ReviewDataFetcher {
 
     @DgsMutation
     public Review addReview(@InputArgument ReviewInput reviewInput) {
-        var reviewError = reviewValidator.validateReview(reviewInput.getMovie());
-        if (!reviewError.getError().isEmpty()) {
-            return reviewError;
+        var reviewErrorReviewValidationResponse = reviewValidator.validateReview(reviewInput.getMovie());
+        if (reviewErrorReviewValidationResponse.isSuccess()) {
+            return reviewMapper.toReview(reviewService.addReview(reviewInput));
+        } else {
+            return reviewErrorReviewValidationResponse.getK();
         }
-        return reviewMapper.toReview(reviewService.addReview(reviewInput));
     }
 
     @DgsMutation
     public List<Review> scrapeRatings(@InputArgument String movie) {
-        var reviewError = reviewValidator.validateReview(movie);
-        if (!reviewError.getError().isEmpty()) {
-            return List.of(reviewError);
+        var reviewErrorReviewValidationResponse = reviewValidator.validateReview(movie);
+        if (reviewErrorReviewValidationResponse.isSuccess()) {
+            var rating = imdbService.searchRating(movie);
+            var reviewError = reviewValidator.validateRatings(reviewErrorReviewValidationResponse.getT(), rating);
+            if (!reviewError.getErrors().isEmpty()) {
+                return List.of(reviewError);
+            }
+            var reviewEntity = reviewService.addReview(reviewMapper.ratingToReviewInput(rating));
+            return List.of(reviewMapper.toReview(reviewEntity));
+        } else {
+            return List.of(reviewErrorReviewValidationResponse.getK());
         }
-        var rating = imdbService.searchRating(movie);
-        var reviewEntity = reviewService.addReview(reviewMapper.ratingToReviewInput(rating));
-        return List.of(reviewMapper.toReview(reviewEntity));
     }
 }

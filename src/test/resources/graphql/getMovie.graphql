@@ -7,7 +7,7 @@ query movies($movie: String) {
                 platform
             }
             ... on ReviewError {
-                error
+                errors
             }
         }
     }
