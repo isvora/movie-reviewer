@@ -37,8 +37,6 @@ public class RottenTomatoesService {
                 .replaceAll("/[^a-z\\d\\?!\\-]/", "")
                 .toLowerCase();
 
-
-
         String url = String.format(rottenTomatoesConfiguration.getUrl(), metacriticMovie);
         try {
             Document doc = Jsoup.connect(url).get();
