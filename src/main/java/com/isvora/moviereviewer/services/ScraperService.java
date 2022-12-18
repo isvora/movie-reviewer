@@ -1,14 +1,10 @@
 package com.isvora.moviereviewer.services;
 
 import com.isvora.moviereviewer.model.Rating;
-import com.netflix.dgs.codegen.generated.types.ReviewInput;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
-import java.util.Map;
 
 @Service
 public abstract class ScraperService {

@@ -20,7 +20,17 @@ type Movie {
     reviews: [Review]
 }
 
-type Review {
+type ReviewResponse {
     score: Float!
     platform: String!
 }
+
+type ReviewError {
+    error: [ReviewErrorEnum]!
+}
+
+enum ReviewErrorEnum {
+    MOVIE_NOT_FOUND
+}
+
+union Review = ReviewResponse | ReviewError

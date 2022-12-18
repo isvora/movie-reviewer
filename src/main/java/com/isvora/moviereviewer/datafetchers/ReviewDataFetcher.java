@@ -3,6 +3,7 @@ package com.isvora.moviereviewer.datafetchers;
 import com.isvora.moviereviewer.mapper.ReviewMapper;
 import com.isvora.moviereviewer.services.ImdbService;
 import com.isvora.moviereviewer.services.ReviewService;
+import com.isvora.moviereviewer.validation.ReviewValidator;
 import com.netflix.dgs.codegen.generated.types.Review;
 import com.netflix.dgs.codegen.generated.types.ReviewInput;
 import com.netflix.graphql.dgs.DgsComponent;
@@ -18,11 +19,13 @@ public class ReviewDataFetcher {
 
     private final ReviewService reviewService;
     private final ReviewMapper reviewMapper;
+    private final ReviewValidator reviewValidator;
     private final ImdbService imdbService;
 
-    public ReviewDataFetcher(ReviewService reviewService, ReviewMapper reviewMapper, ImdbService imdbService) {
+    public ReviewDataFetcher(ReviewService reviewService, ReviewMapper reviewMapper, ReviewValidator reviewValidator, ImdbService imdbService) {
         this.reviewService = reviewService;
         this.reviewMapper = reviewMapper;
+        this.reviewValidator = reviewValidator;
         this.imdbService = imdbService;
     }
 
@@ -34,11 +37,19 @@ public class ReviewDataFetcher {
 
     @DgsMutation
     public Review addReview(@InputArgument ReviewInput reviewInput) {
-       return reviewMapper.toReview(reviewService.addReview(reviewInput));
+        var reviewError = reviewValidator.validateReview(reviewInput.getMovie());
+        if (!reviewError.getError().isEmpty()) {
+            return reviewError;
+        }
+        return reviewMapper.toReview(reviewService.addReview(reviewInput));
     }
 
     @DgsMutation
     public List<Review> scrapeRatings(@InputArgument String movie) {
+        var reviewError = reviewValidator.validateReview(movie);
+        if (!reviewError.getError().isEmpty()) {
+            return List.of(reviewError);
+        }
         var rating = imdbService.searchRating(movie);
         var reviewEntity = reviewService.addReview(reviewMapper.ratingToReviewInput(rating));
         return List.of(reviewMapper.toReview(reviewEntity));

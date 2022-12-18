@@ -1,11 +1,8 @@
 package com.isvora.moviereviewer.services;
 
 import com.isvora.moviereviewer.database.ReviewEntity;
-import com.isvora.moviereviewer.model.Rating;
 import com.isvora.moviereviewer.repositories.ReviewRepository;
-import com.netflix.dgs.codegen.generated.types.Review;
 import com.netflix.dgs.codegen.generated.types.ReviewInput;
-import com.netflix.graphql.dgs.exceptions.DgsEntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -24,11 +21,7 @@ public class ReviewService {
 
     public ReviewEntity addReview(ReviewInput reviewInput) {
         var movie = movieService.getMovieByName(reviewInput.getMovie());
-        if (movie.isEmpty()) {
-            throw new DgsEntityNotFoundException();
-        } else {
-            return reviewRepository.save(new ReviewEntity(reviewInput.getScore(), reviewInput.getPlatform(), movie.get()));
-        }
+        return reviewRepository.save(new ReviewEntity(reviewInput.getScore(), reviewInput.getPlatform(), movie.get()));
     }
 
     public List<ReviewEntity> getReviewsByMovieAndPlatform(String movie, String platform) {

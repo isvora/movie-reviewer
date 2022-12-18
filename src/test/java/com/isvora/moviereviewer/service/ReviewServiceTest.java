@@ -7,7 +7,6 @@ import com.isvora.moviereviewer.repositories.ReviewRepository;
 import com.isvora.moviereviewer.services.MovieService;
 import com.isvora.moviereviewer.services.ReviewService;
 import com.netflix.dgs.codegen.generated.types.ReviewInput;
-import com.netflix.graphql.dgs.exceptions.DgsEntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +16,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -74,7 +74,7 @@ public class ReviewServiceTest {
         Mockito.when(movieService.getMovieByName(TestHelper.MOVIE_NAME)).thenReturn(Optional.empty());
 
         // then
-        Assertions.assertThrows(DgsEntityNotFoundException.class, () -> reviewService.addReview(reviewInput));
+        Assertions.assertThrows(NoSuchElementException.class, () -> reviewService.addReview(reviewInput));
     }
 
     @Test

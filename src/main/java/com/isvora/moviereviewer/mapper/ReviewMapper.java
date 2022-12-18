@@ -4,6 +4,7 @@ import com.isvora.moviereviewer.database.ReviewEntity;
 import com.isvora.moviereviewer.model.Rating;
 import com.netflix.dgs.codegen.generated.types.Review;
 import com.netflix.dgs.codegen.generated.types.ReviewInput;
+import com.netflix.dgs.codegen.generated.types.ReviewResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,8 +23,8 @@ public class ReviewMapper {
         }
         return reviews;
     }
-    public Review toReview(ReviewEntity reviewEntity) {
-        return Review.newBuilder()
+    public ReviewResponse toReview(ReviewEntity reviewEntity) {
+        return ReviewResponse.newBuilder()
                 .score(reviewEntity.getScore())
                 .platform(reviewEntity.getPlatform())
                 .build();
