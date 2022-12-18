@@ -6,6 +6,7 @@ import com.isvora.moviereviewer.model.Rating;
 import com.isvora.moviereviewer.services.ImdbService;
 import com.isvora.moviereviewer.services.MetacriticService;
 import com.isvora.moviereviewer.services.ReviewService;
+import com.isvora.moviereviewer.services.RottenTomatoesService;
 import com.isvora.moviereviewer.validation.ReviewValidator;
 import com.netflix.dgs.codegen.generated.types.Review;
 import com.netflix.dgs.codegen.generated.types.ReviewInput;
@@ -27,13 +28,15 @@ public class ReviewDataFetcher {
     private final ReviewValidator reviewValidator;
     private final ImdbService imdbService;
     private final MetacriticService metacriticService;
+    private final RottenTomatoesService rottenTomatoesService;
 
-    public ReviewDataFetcher(ReviewService reviewService, ReviewMapper reviewMapper, ReviewValidator reviewValidator, ImdbService imdbService, MetacriticService metacriticService) {
+    public ReviewDataFetcher(ReviewService reviewService, ReviewMapper reviewMapper, ReviewValidator reviewValidator, ImdbService imdbService, MetacriticService metacriticService, RottenTomatoesService rottenTomatoesService) {
         this.reviewService = reviewService;
         this.reviewMapper = reviewMapper;
         this.reviewValidator = reviewValidator;
         this.imdbService = imdbService;
         this.metacriticService = metacriticService;
+        this.rottenTomatoesService = rottenTomatoesService;
     }
 
     @DgsQuery
@@ -59,7 +62,10 @@ public class ReviewDataFetcher {
             List<Rating> ratings = new ArrayList<>();
             Set<ReviewEntity> reviewEntities = new HashSet<>();
 
+            ratings.add(rottenTomatoesService.searchAudienceRating(movie));
+            ratings.add(rottenTomatoesService.searchCriticRating(movie));
             ratings.add(metacriticService.searchCriticRating(movie));
+            ratings.add(metacriticService.searchAudienceRating(movie));
             ratings.add(imdbService.searchRating(movie));
             ratings.forEach(rating -> {
                 var reviewError = reviewValidator.validateRatings(reviewErrorReviewValidationResponse.getT(), rating);

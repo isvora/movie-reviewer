@@ -21,6 +21,15 @@ public class MetacriticService {
     }
 
     public Rating searchCriticRating(String movie) {
+        return getRating(movie, "#nav_to_metascore > div:nth-child(2) > div.distribution > div.score.fl > a > div", Source.CRITIC);
+    }
+
+
+    public Rating searchAudienceRating(String movie) {
+        return getRating(movie, "#nav_to_metascore > div:nth-child(3) > div.distribution > div.score.fl > a > div", Source.AUDIENCE);
+    }
+
+    private Rating getRating(String movie, String cssQuery, Source source) {
         String metacriticMovie = movie.trim()
                 .replaceAll(" ", "-")
                 .replaceAll("$ ", "")
@@ -30,9 +39,9 @@ public class MetacriticService {
         String url = String.format(metacriticConfiguration.getUrl(), metacriticMovie);
         try {
             Document doc = Jsoup.connect(url).get();
-            var metacriticScore = doc.select("#nav_to_metascore > div:nth-child(2) > div.distribution > div.score.fl > a > div");
+            var metacriticScore = doc.select(cssQuery);
             var score = ((TextNode) metacriticScore.get(0).childNodes().get(0)).text();
-            return new Rating(Double.parseDouble(score), Platform.METACRITIC, movie, Source.CRITIC);
+            return new Rating(Double.parseDouble(score), Platform.METACRITIC, movie, source);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
