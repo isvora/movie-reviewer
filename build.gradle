@@ -27,6 +27,7 @@ dependencies {
 	implementation group: 'org.postgresql', name: 'postgresql', version: '42.5.1'
 
 	implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.7.2'
+	implementation group: 'org.jsoup', name: 'jsoup', version: '1.15.3'
 
 	implementation("com.google.guava:guava:31.1-jre")
 

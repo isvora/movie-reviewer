@@ -185,35 +185,4 @@ class ReviewDataFetcherTest {
         Assertions.assertEquals(reviewResponses.get(0).getPlatform(), TestHelper.METACRITIC);
         Assertions.assertEquals(reviewResponses.get(0).getScore(), TestHelper.SCORE_2);
     }
-
-    @Test
-    void testScrapeRatingAlreadyExists() throws IOException {
-        MovieEntity movieEntity = new MovieEntity(TestHelper.MOVIE_NAME);
-        ReviewEntity reviewEntity = new ReviewEntity(TestHelper.SCORE, TestHelper.IMDB, movieEntity);
-        movieEntity.setReviewEntities(Set.of(reviewEntity));
-
-        Mockito.when(movieService.getMovieByName(TestHelper.MOVIE_NAME)).thenReturn(Optional.of(movieEntity));
-        Mockito.when(imdbService.searchRating(TestHelper.MOVIE_NAME)).thenReturn(
-                new Rating(TestHelper.SCORE, Platform.IMDB, TestHelper.MOVIE_NAME
-                ));
-        Mockito.when(reviewService.addReview(any(ReviewInput.class))).thenReturn(reviewEntity);
-
-        Map<String, Object> map = new HashMap<>() {{
-            put("movie", TestHelper.MOVIE_NAME);
-        }};
-
-        URL url = Resources.getResource("graphql/scrapeRatings.graphql");
-        @Language("GraphQL") String query = Resources.toString(url, StandardCharsets.UTF_8);
-
-        List<ReviewError> reviewResponses = dgsQueryExecutor.executeAndExtractJsonPathAsObject(
-                query,
-                "data.scrapeRatings",
-                map,
-                new TypeRef<>() {
-                }
-        );
-
-        Assertions.assertFalse(reviewResponses.isEmpty());
-        Assertions.assertEquals(reviewResponses.get(0).getErrors().get(0), ReviewErrorEnum.REVIEW_ALREADY_PRESENT);
-    }
 }

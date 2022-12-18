@@ -2,7 +2,8 @@ package com.isvora.moviereviewer.type;
 
 public enum Platform {
 
-    IMDB("IMDB");
+    IMDB("IMDB"),
+    METACRITIC("Metacritic");
 
     private String name;
 
