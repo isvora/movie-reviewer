@@ -1,7 +1,7 @@
 package com.isvora.moviereviewer.datafetchers;
 
-import com.isvora.moviereviewer.database.ReviewEntity;
 import com.isvora.moviereviewer.mapper.ReviewMapper;
+import com.isvora.moviereviewer.services.ImdbService;
 import com.isvora.moviereviewer.services.ReviewService;
 import com.netflix.dgs.codegen.generated.types.Review;
 import com.netflix.dgs.codegen.generated.types.ReviewInput;
@@ -10,21 +10,20 @@ import com.netflix.graphql.dgs.DgsMutation;
 import com.netflix.graphql.dgs.DgsQuery;
 import com.netflix.graphql.dgs.InputArgument;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @DgsComponent
 public class ReviewDataFetcher {
 
     private final ReviewService reviewService;
     private final ReviewMapper reviewMapper;
+    private final ImdbService imdbService;
 
-    public ReviewDataFetcher(ReviewService reviewService, ReviewMapper reviewMapper) {
+    public ReviewDataFetcher(ReviewService reviewService, ReviewMapper reviewMapper, ImdbService imdbService) {
         this.reviewService = reviewService;
         this.reviewMapper = reviewMapper;
+        this.imdbService = imdbService;
     }
 
     @DgsQuery
@@ -36,5 +35,12 @@ public class ReviewDataFetcher {
     @DgsMutation
     public Review addReview(@InputArgument ReviewInput reviewInput) {
        return reviewMapper.toReview(reviewService.addReview(reviewInput));
+    }
+
+    @DgsMutation
+    public List<Review> scrapeRatings(@InputArgument String movie) {
+        var rating = imdbService.searchRating(movie);
+        var reviewEntity = reviewService.addReview(reviewMapper.ratingToReviewInput(rating));
+        return List.of(reviewMapper.toReview(reviewEntity));
     }
 }

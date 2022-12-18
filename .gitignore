@@ -38,3 +38,6 @@ out/
 
 # DB
 env.properties
+
+# Selenium
+chromedriver.exe

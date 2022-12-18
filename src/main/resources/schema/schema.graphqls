@@ -6,6 +6,7 @@ type Query {
 type Mutation {
     addMovie(movie: String!): Movie
     addReview(reviewInput: ReviewInput!): Review
+    scrapeRatings(movie: String!): [Review]
 }
 
 input ReviewInput {

@@ -1,6 +1,7 @@
 package com.isvora.moviereviewer.services;
 
 import com.isvora.moviereviewer.database.ReviewEntity;
+import com.isvora.moviereviewer.model.Rating;
 import com.isvora.moviereviewer.repositories.ReviewRepository;
 import com.netflix.dgs.codegen.generated.types.Review;
 import com.netflix.dgs.codegen.generated.types.ReviewInput;
