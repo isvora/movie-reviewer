@@ -47,13 +47,13 @@ public class ReviewServiceTest {
                 .score(TestHelper.SCORE)
                 .build();
         var movieEntity = new MovieEntity(TestHelper.MOVIE_NAME);
-        var reviewEntity = new ReviewEntity(TestHelper.SCORE, TestHelper.IMDB, movieEntity);
+        var reviewEntity = new ReviewEntity(TestHelper.SCORE, TestHelper.IMDB, TestHelper.SOURCE, movieEntity);
 
         Mockito.when(movieService.getMovieByName(TestHelper.MOVIE_NAME)).thenReturn(Optional.of(movieEntity));
         Mockito.when(reviewRepository.save(any(ReviewEntity.class))).thenReturn(reviewEntity);
 
         // when
-        var result = reviewService.addReview(reviewInput);
+        var result = reviewService.addReview(reviewInput, TestHelper.SOURCE);
 
         // then
         Assertions.assertNotNull(result);
@@ -74,14 +74,14 @@ public class ReviewServiceTest {
         Mockito.when(movieService.getMovieByName(TestHelper.MOVIE_NAME)).thenReturn(Optional.empty());
 
         // then
-        Assertions.assertThrows(NoSuchElementException.class, () -> reviewService.addReview(reviewInput));
+        Assertions.assertThrows(NoSuchElementException.class, () -> reviewService.addReview(reviewInput, TestHelper.SOURCE));
     }
 
     @Test
     void testGetReviewsByMovieAndPlatformMovieIsPresent() {
         // given
         var movieEntity = new MovieEntity(TestHelper.MOVIE_NAME);
-        var reviewEntity = new ReviewEntity(TestHelper.SCORE, TestHelper.IMDB, movieEntity);
+        var reviewEntity = new ReviewEntity(TestHelper.SCORE, TestHelper.IMDB, TestHelper.SOURCE, movieEntity);
 
         Mockito.when(movieService.getMovieByName(TestHelper.MOVIE_NAME)).thenReturn(Optional.of(movieEntity));
         Mockito.when(reviewRepository.findByMovieEntityAndPlatform(movieEntity, TestHelper.IMDB)).thenReturn(Optional.of(reviewEntity));
@@ -99,7 +99,7 @@ public class ReviewServiceTest {
     void testGetReviewsByMovieIsPresent() {
         // given
         var movieEntity = new MovieEntity(TestHelper.MOVIE_NAME);
-        var reviewEntity = new ReviewEntity(TestHelper.SCORE, TestHelper.IMDB, movieEntity);
+        var reviewEntity = new ReviewEntity(TestHelper.SCORE, TestHelper.IMDB, TestHelper.SOURCE, movieEntity);
 
         Mockito.when(movieService.getMovieByName(TestHelper.MOVIE_NAME)).thenReturn(Optional.of(movieEntity));
         Mockito.when(reviewRepository.findAllByMovieEntity(movieEntity)).thenReturn(List.of(reviewEntity));

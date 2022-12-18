@@ -13,6 +13,7 @@ input ReviewInput {
     movie: String!
     score: Float!,
     platform: String!
+    source: String
 }
 
 type Movie {
@@ -23,6 +24,7 @@ type Movie {
 type ReviewResponse {
     score: Float!
     platform: String!
+    source: String
 }
 
 type ReviewError {

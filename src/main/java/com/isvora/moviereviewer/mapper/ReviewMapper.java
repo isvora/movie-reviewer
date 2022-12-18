@@ -27,6 +27,7 @@ public class ReviewMapper {
         return ReviewResponse.newBuilder()
                 .score(reviewEntity.getScore())
                 .platform(reviewEntity.getPlatform())
+                .source(reviewEntity.getSource())
                 .build();
     }
 
@@ -35,6 +36,7 @@ public class ReviewMapper {
                 .movie(rating.getMovie())
                 .score(rating.getScore())
                 .platform(rating.getPlatform().getName())
+                .source(rating.getSource().getName())
                 .build();
     }
 }

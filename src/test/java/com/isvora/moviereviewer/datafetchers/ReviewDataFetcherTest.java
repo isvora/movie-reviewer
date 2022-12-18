@@ -9,6 +9,7 @@ import com.isvora.moviereviewer.services.ImdbService;
 import com.isvora.moviereviewer.services.MovieService;
 import com.isvora.moviereviewer.services.ReviewService;
 import com.isvora.moviereviewer.type.Platform;
+import com.isvora.moviereviewer.type.Source;
 import com.jayway.jsonpath.TypeRef;
 import com.netflix.dgs.codegen.generated.types.*;
 import com.netflix.graphql.dgs.DgsQueryExecutor;
@@ -25,7 +26,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 
 @SpringBootTest
 class ReviewDataFetcherTest {
@@ -46,7 +47,7 @@ class ReviewDataFetcherTest {
     void testGetAllReviewsForMovieFromPlatform() throws IOException {
         List<ReviewEntity> reviewEntities = new ArrayList<>();
         MovieEntity movieEntity = new MovieEntity(TestHelper.MOVIE_NAME);
-        reviewEntities.add(new ReviewEntity(TestHelper.SCORE, TestHelper.IMDB, movieEntity));
+        reviewEntities.add(new ReviewEntity(TestHelper.SCORE, TestHelper.IMDB, TestHelper.SOURCE, movieEntity));
         Mockito.when(reviewService.getReviewsByMovieAndPlatform(TestHelper.MOVIE_NAME, TestHelper.IMDB)).thenReturn(reviewEntities);
 
         Map<String, Object> map = new HashMap<>() {{
@@ -75,7 +76,7 @@ class ReviewDataFetcherTest {
     void testGetAllReviewsForMovie() throws IOException {
         List<ReviewEntity> reviewEntities = new ArrayList<>();
         MovieEntity movieEntity = new MovieEntity(TestHelper.MOVIE_NAME);
-        reviewEntities.add(new ReviewEntity(TestHelper.SCORE, TestHelper.IMDB, movieEntity));
+        reviewEntities.add(new ReviewEntity(TestHelper.SCORE, TestHelper.IMDB, TestHelper.SOURCE, movieEntity));
         Mockito.when(reviewService.getReviewsByMovieAndPlatform(TestHelper.MOVIE_NAME, null)).thenReturn(reviewEntities);
 
         Map<String, Object> map = new HashMap<>() {{
@@ -102,10 +103,10 @@ class ReviewDataFetcherTest {
     @Test
     void testAddReview() throws IOException {
         MovieEntity movieEntity = new MovieEntity(TestHelper.MOVIE_NAME);
-        ReviewEntity reviewEntity = new ReviewEntity(TestHelper.SCORE, TestHelper.IMDB, movieEntity);
+        ReviewEntity reviewEntity = new ReviewEntity(TestHelper.SCORE, TestHelper.IMDB, TestHelper.SOURCE, movieEntity);
 
         Mockito.when(movieService.getMovieByName(TestHelper.MOVIE_NAME)).thenReturn(Optional.of(movieEntity));
-        Mockito.when(reviewService.addReview(any(ReviewInput.class))).thenReturn(reviewEntity);
+        Mockito.when(reviewService.addReview(any(ReviewInput.class), eq(null))).thenReturn(reviewEntity);
 
         Map<String, Object> map = new HashMap<>() {{
             put("movie", TestHelper.MOVIE_NAME);
@@ -157,14 +158,14 @@ class ReviewDataFetcherTest {
     @Test
     void testScrapeRating() throws IOException {
         MovieEntity movieEntity = new MovieEntity(TestHelper.MOVIE_NAME);
-        ReviewEntity reviewEntity = new ReviewEntity(TestHelper.SCORE_2, TestHelper.METACRITIC, movieEntity);
+        ReviewEntity reviewEntity = new ReviewEntity(TestHelper.SCORE_2, TestHelper.METACRITIC, TestHelper.SOURCE, movieEntity);
         movieEntity.setReviewEntities(Set.of(reviewEntity));
 
         Mockito.when(movieService.getMovieByName(TestHelper.MOVIE_NAME)).thenReturn(Optional.of(movieEntity));
         Mockito.when(imdbService.searchRating(TestHelper.MOVIE_NAME)).thenReturn(
-                new Rating(TestHelper.SCORE, Platform.IMDB, TestHelper.MOVIE_NAME
-                ));
-        Mockito.when(reviewService.addReview(any(ReviewInput.class))).thenReturn(reviewEntity);
+                new Rating(TestHelper.SCORE, Platform.IMDB, TestHelper.MOVIE_NAME,
+                        Source.AUDIENCE));
+        Mockito.when(reviewService.addReview(any(ReviewInput.class), anyString())).thenReturn(reviewEntity);
 
         Map<String, Object> map = new HashMap<>() {{
             put("movie", TestHelper.MOVIE_NAME);

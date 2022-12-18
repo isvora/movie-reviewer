@@ -31,7 +31,7 @@ class MetacriticServiceTest {
         Mockito.when(metacriticConfiguration.getUrl()).thenReturn("https://www.metacritic.com/movie/%s");
 
         // when
-        var rating = metacriticService.searchRating(TestHelper.MOVIE_NAME);
+        var rating = metacriticService.searchCriticRating(TestHelper.MOVIE_NAME);
 
         // then
         Assertions.assertNotNull(rating);

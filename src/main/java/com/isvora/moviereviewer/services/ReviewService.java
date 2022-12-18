@@ -19,9 +19,9 @@ public class ReviewService {
         this.reviewRepository = reviewRepository;
     }
 
-    public ReviewEntity addReview(ReviewInput reviewInput) {
+    public ReviewEntity addReview(ReviewInput reviewInput, String source) {
         var movie = movieService.getMovieByName(reviewInput.getMovie());
-        return reviewRepository.save(new ReviewEntity(reviewInput.getScore(), reviewInput.getPlatform(), movie.get()));
+        return reviewRepository.save(new ReviewEntity(reviewInput.getScore(), reviewInput.getPlatform(), source, movie.get()));
     }
 
     public List<ReviewEntity> getReviewsByMovieAndPlatform(String movie, String platform) {

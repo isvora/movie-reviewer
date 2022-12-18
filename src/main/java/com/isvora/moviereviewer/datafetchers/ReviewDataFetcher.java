@@ -46,7 +46,7 @@ public class ReviewDataFetcher {
     public Review addReview(@InputArgument ReviewInput reviewInput) {
         var reviewErrorReviewValidationResponse = reviewValidator.validateReview(reviewInput.getMovie());
         if (reviewErrorReviewValidationResponse.isSuccess()) {
-            return reviewMapper.toReview(reviewService.addReview(reviewInput));
+            return reviewMapper.toReview(reviewService.addReview(reviewInput, reviewInput.getSource()));
         } else {
             return reviewErrorReviewValidationResponse.getK();
         }
@@ -59,12 +59,12 @@ public class ReviewDataFetcher {
             List<Rating> ratings = new ArrayList<>();
             Set<ReviewEntity> reviewEntities = new HashSet<>();
 
-            ratings.add(metacriticService.searchRating(movie));
+            ratings.add(metacriticService.searchCriticRating(movie));
             ratings.add(imdbService.searchRating(movie));
             ratings.forEach(rating -> {
                 var reviewError = reviewValidator.validateRatings(reviewErrorReviewValidationResponse.getT(), rating);
                 if (reviewError.getErrors().isEmpty()) {
-                    reviewEntities.add(reviewService.addReview(reviewMapper.ratingToReviewInput(rating)));
+                    reviewEntities.add(reviewService.addReview(reviewMapper.ratingToReviewInput(rating), rating.getSource().getName()));
                 }
             });
 

@@ -1,19 +1,18 @@
 package com.isvora.moviereviewer.services;
 
-import com.isvora.moviereviewer.database.ReviewEntity;
 import com.isvora.moviereviewer.model.Rating;
 import com.isvora.moviereviewer.type.Platform;
+import com.isvora.moviereviewer.type.Source;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Service
-public class ImdbService extends ScraperService {
+public class ImdbService {
 
     private final static String IMDB = "https://www.imdb.com/";
     private final static String IMDB_DIV_SEARCH_BAR_XPATH= "//div[@class='sc-crrsfI iDhzRL searchform__inputContainer']";
@@ -29,10 +28,18 @@ public class ImdbService extends ScraperService {
         this.wait = new WebDriverWait(webDriver, 5);
     }
 
-    @Override
+    public WebDriver getWebDriver() {
+        System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+        var options = new ChromeOptions();
+        options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
+        options.addArguments("window-size=1920,1080");
+        options.setHeadless(true);
+        return new ChromeDriver(options);
+    }
+
     public Rating searchRating(String movie) {
         searchImdbForMovie(movie);
-        return new Rating(findMovieScore(), Platform.IMDB, movie);
+        return new Rating(findMovieScore(), Platform.IMDB, movie, Source.AUDIENCE);
     }
 
     private void searchImdbForMovie(String movie) {

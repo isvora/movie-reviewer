@@ -3,6 +3,7 @@ package com.isvora.moviereviewer.services;
 import com.isvora.moviereviewer.config.MetacriticConfiguration;
 import com.isvora.moviereviewer.model.Rating;
 import com.isvora.moviereviewer.type.Platform;
+import com.isvora.moviereviewer.type.Source;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.TextNode;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
-public class MetacriticService extends ScraperService {
+public class MetacriticService {
 
     private final MetacriticConfiguration metacriticConfiguration;
 
@@ -19,8 +20,7 @@ public class MetacriticService extends ScraperService {
         this.metacriticConfiguration = metacriticConfiguration;
     }
 
-    @Override
-    public Rating searchRating(String movie) {
+    public Rating searchCriticRating(String movie) {
         String metacriticMovie = movie.trim()
                 .replaceAll(" ", "-")
                 .replaceAll("$ ", "")
@@ -32,7 +32,7 @@ public class MetacriticService extends ScraperService {
             Document doc = Jsoup.connect(url).get();
             var metacriticScore = doc.select("#nav_to_metascore > div:nth-child(2) > div.distribution > div.score.fl > a > div");
             var score = ((TextNode) metacriticScore.get(0).childNodes().get(0)).text();
-            return new Rating(Double.parseDouble(score), Platform.METACRITIC, movie);
+            return new Rating(Double.parseDouble(score), Platform.METACRITIC, movie, Source.CRITIC);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

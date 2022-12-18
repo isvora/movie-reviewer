@@ -17,6 +17,9 @@ public class ReviewEntity {
     @Column(name = "platform")
     private String platform;
 
+    @Column(name = "source")
+    private String source;
+
     @ManyToOne
     @JoinColumn(name="reviews", nullable=false)
     private MovieEntity movieEntity;
@@ -25,9 +28,10 @@ public class ReviewEntity {
 
     }
 
-    public ReviewEntity(double score, String platform, MovieEntity movieEntity) {
+    public ReviewEntity(double score, String platform, String source, MovieEntity movieEntity) {
         this.score = score;
         this.platform = platform;
+        this.source = source;
         this.movieEntity = movieEntity;
     }
 
@@ -63,12 +67,20 @@ public class ReviewEntity {
         this.movieEntity = movieEntity;
     }
 
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ReviewEntity that = (ReviewEntity) o;
-        return Double.compare(that.score, score) == 0 && Objects.equals(id, that.id) && Objects.equals(platform, that.platform) && Objects.equals(movieEntity, that.movieEntity);
+        return Double.compare(that.score, score) == 0 && Objects.equals(id, that.id) && Objects.equals(platform, that.platform) && Objects.equals(source, that.source) && Objects.equals(movieEntity, that.movieEntity);
     }
 
     @Override
@@ -86,6 +98,7 @@ public class ReviewEntity {
                 "id=" + id +
                 ", score=" + score +
                 ", platform='" + platform + '\'' +
+                ", source='" + source + '\'' +
                 '}';
     }
 }
