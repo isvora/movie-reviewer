@@ -28,6 +28,8 @@ dependencies {
 
 	implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.7.2'
 
+	implementation("com.google.guava:guava:31.1-jre")
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 }

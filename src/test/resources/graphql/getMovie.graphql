@@ -1,0 +1,14 @@
+query movies($movie: String) {
+    movies(movie: $movie) {
+        name
+        reviews {
+            ... on ReviewResponse {
+                score
+                platform
+            }
+            ... on ReviewError {
+                error
+            }
+        }
+    }
+}

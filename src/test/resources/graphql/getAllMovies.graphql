@@ -1,0 +1,14 @@
+query movies {
+    movies {
+        name
+        reviews {
+            ... on ReviewResponse {
+                score
+                platform
+            }
+            ... on ReviewError {
+                error
+            }
+        }
+    }
+}
