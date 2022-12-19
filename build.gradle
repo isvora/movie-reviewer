@@ -1,10 +1,9 @@
-import com.netflix.graphql.dgs.codegen.gradle.GenerateJavaTask
-
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.6.2'
 	id 'io.spring.dependency-management' version '1.1.0'
 	id("com.netflix.dgs.codegen") version "5.6.0"
+	id 'jacoco'
 }
 
 group = 'com.isvora'
@@ -54,4 +53,50 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+apply plugin: 'jacoco'
 
+test {
+	finalizedBy jacocoTestReport
+}
+
+def jacocoExclude = [
+		"**/com/isvora/moviereview/database/**",
+		"**/com/isvora/moviereview/config/**",
+		"**/com/isvora/moviereview/model/**",
+		"**/config/*",
+		"**/com/netflix/dgs/codegen/generated/types/**"
+]
+
+jacocoTestReport {
+	dependsOn test
+	reports {
+		xml.required = false
+		csv.required = false
+		html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+	}
+
+	afterEvaluate {
+		afterEvaluate {
+			getClassDirectories().setFrom(classDirectories.files.collect {
+				fileTree(dir: it, exclude: jacocoExclude)
+			})
+		}
+	}
+}
+
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			limit {
+				minimum = 0.7
+			}
+		}
+	}
+	afterEvaluate {
+		getClassDirectories().setFrom(classDirectories.files.collect {
+			fileTree(dir: it, exclude: jacocoExclude)
+		})
+	}
+}
+
+check.dependsOn jacocoTestCoverageVerification
