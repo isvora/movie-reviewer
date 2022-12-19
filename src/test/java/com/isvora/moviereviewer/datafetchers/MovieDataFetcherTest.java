@@ -27,7 +27,7 @@ import java.util.Map;
 public class MovieDataFetcherTest {
 
     @Autowired
-    DgsQueryExecutor dgsQueryExecutor;
+    private DgsQueryExecutor dgsQueryExecutor;
 
     @MockBean
     private MovieService movieService;

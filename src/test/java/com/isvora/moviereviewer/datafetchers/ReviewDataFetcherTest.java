@@ -32,7 +32,7 @@ import static org.mockito.ArgumentMatchers.*;
 class ReviewDataFetcherTest {
 
     @Autowired
-    DgsQueryExecutor dgsQueryExecutor;
+    private DgsQueryExecutor dgsQueryExecutor;
 
     @MockBean
     private ReviewService reviewService;
@@ -52,7 +52,7 @@ class ReviewDataFetcherTest {
 
         Map<String, Object> map = new HashMap<>() {{
             put("movie", TestHelper.MOVIE_NAME);
-            put ("platform", TestHelper.IMDB);
+            put("platform", TestHelper.IMDB);
         }};
 
         URL url = Resources.getResource("graphql/getAllReviewsFromMovieForPlatform.graphql");

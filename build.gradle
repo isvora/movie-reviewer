@@ -35,7 +35,23 @@ dependencies {
 
 }
 
+apply plugin: 'checkstyle'
+
+checkstyle {
+	// assign the latest checkstyle version explicitly
+	// default version is very old, likes 5.9
+	toolVersion = '10.5.0'
+	// checkstyle.xml copy from:
+	// https://raw.githubusercontent.com/checkstyle/checkstyle/checkstyle-8.6/src/main/resources/google_checks.xml
+	// the version should be as same as plugin version
+	configFile = rootProject.file('config/checkstyle/checkstyle.xml')
+}
+
+checkstyleMain.source = "src/main/java"
+checkstyleMain.classpath =  rootProject.files()
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
 

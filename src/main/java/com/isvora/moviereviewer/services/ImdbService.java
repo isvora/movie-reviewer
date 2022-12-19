@@ -14,18 +14,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class ImdbService {
 
-    private final static String IMDB = "https://www.imdb.com/";
-    private final static String IMDB_DIV_SEARCH_BAR_XPATH= "//div[@class='sc-crrsfI iDhzRL searchform__inputContainer']";
-    private final static String IMDB_DIV_SEARCH_BAR_ID = "imdbHeader__search-menu";
-    private final static String IMDB_RATING_SPAN_XPATH = "//span[@class='sc-7ab21ed2-1 jGRxWM']";
-    private final static String IMDB_UL_XPATH = "//ul[@class='react-autosuggest__suggestions-list anim-enter-done']";
+    private static final String IMDB = "https://www.imdb.com/";
+    private static final String IMDB_DIV_SEARCH_BAR_XPATH = "//div[@class='sc-crrsfI iDhzRL searchform__inputContainer']";
+    private static final String IMDB_DIV_SEARCH_BAR_ID = "imdbHeader__search-menu";
+    private static final String IMDB_RATING_SPAN_XPATH = "//span[@class='sc-7ab21ed2-1 jGRxWM']";
+    private static final String IMDB_UL_XPATH = "//ul[@class='react-autosuggest__suggestions-list anim-enter-done']";
+    private static final int TIMEOUT_PERIOD = 5;
 
     private final WebDriver webDriver;
     private final WebDriverWait wait;
 
     public ImdbService() {
         this.webDriver = getWebDriver();
-        this.wait = new WebDriverWait(webDriver, 5);
+        this.wait = new WebDriverWait(webDriver, TIMEOUT_PERIOD);
     }
 
     public WebDriver getWebDriver() {

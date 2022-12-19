@@ -1,6 +1,6 @@
 package com.isvora.moviereviewer;
 
-public class TestHelper {
+public final class TestHelper {
 
     private TestHelper() {
 
@@ -12,4 +12,5 @@ public class TestHelper {
     public static final String SOURCE = "Audience";
     public static final double SCORE = 8.6;
     public static final double SCORE_2 = 96;
+    public static final double SCORE_3 = 97;
 }

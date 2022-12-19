@@ -34,7 +34,7 @@ class RottenTomatoesServiceTest {
         Assertions.assertNotNull(rating);
         Assertions.assertEquals(rating.getMovie(), TestHelper.MOVIE_NAME);
         Assertions.assertEquals(rating.getPlatform(), Platform.ROTTEN_TOMATOES);
-        Assertions.assertEquals(rating.getScore(), 97);
+        Assertions.assertEquals(rating.getScore(), TestHelper.SCORE_3);
         Assertions.assertEquals(rating.getSource(), Source.CRITIC);
     }
 
@@ -45,7 +45,7 @@ class RottenTomatoesServiceTest {
         Assertions.assertNotNull(rating);
         Assertions.assertEquals(rating.getMovie(), TestHelper.MOVIE_NAME);
         Assertions.assertEquals(rating.getPlatform(), Platform.ROTTEN_TOMATOES);
-        Assertions.assertEquals(rating.getScore(), 96);
+        Assertions.assertEquals(rating.getScore(), TestHelper.SCORE_2);
         Assertions.assertEquals(rating.getSource(), Source.AUDIENCE);
     }
 }

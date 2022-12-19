@@ -21,7 +21,7 @@ public class ReviewEntity {
     private String source;
 
     @ManyToOne
-    @JoinColumn(name="reviews", nullable=false)
+    @JoinColumn(name = "reviews", nullable = false)
     private MovieEntity movieEntity;
 
     public ReviewEntity() {
@@ -77,8 +77,12 @@ public class ReviewEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         ReviewEntity that = (ReviewEntity) o;
         return Double.compare(that.score, score) == 0 && Objects.equals(id, that.id) && Objects.equals(platform, that.platform) && Objects.equals(source, that.source) && Objects.equals(movieEntity, that.movieEntity);
     }
@@ -94,11 +98,11 @@ public class ReviewEntity {
 
     @Override
     public String toString() {
-        return "ReviewEntity{" +
-                "id=" + id +
-                ", score=" + score +
-                ", platform='" + platform + '\'' +
-                ", source='" + source + '\'' +
-                '}';
+        return "ReviewEntity{"
+                + "id = " + id
+                + ", score = " + score
+                + ", platform = '" + platform + '\''
+                + ", source = '" + source + '\''
+                + '}';
     }
 }

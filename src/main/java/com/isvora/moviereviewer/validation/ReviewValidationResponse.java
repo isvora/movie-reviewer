@@ -3,7 +3,7 @@ package com.isvora.moviereviewer.validation;
 import org.springframework.stereotype.Component;
 
 @Component
-public abstract class ReviewValidationResponse<T, K>{
+public abstract class ReviewValidationResponse<T, K> {
 
     private T t;
 

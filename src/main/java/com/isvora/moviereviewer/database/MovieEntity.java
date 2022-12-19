@@ -54,8 +54,12 @@ public class MovieEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         MovieEntity that = (MovieEntity) o;
         return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(reviewEntities, that.reviewEntities);
     }
@@ -71,10 +75,10 @@ public class MovieEntity {
 
     @Override
     public String toString() {
-        return "MovieEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", reviewEntities=" + reviewEntities +
-                '}';
+        return "MovieEntity{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", reviewEntities=" + reviewEntities
+                + '}';
     }
 }
