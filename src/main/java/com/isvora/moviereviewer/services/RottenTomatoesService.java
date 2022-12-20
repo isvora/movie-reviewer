@@ -31,7 +31,7 @@ public class RottenTomatoesService {
     private Rating getRating(String movie, String cssQuery, Source source) {
         String metacriticMovie = movie.trim()
                 .replaceAll(" ", "_")
-                .replaceAll("$ ", "")
+                .replaceAll("'", "")
                 .replaceAll("/[^a-z\\d\\?!\\-]/", "")
                 .toLowerCase();
 
